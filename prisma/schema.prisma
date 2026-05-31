@@ -1,0 +1,146 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Project {
+  id             String   @id @default(cuid())
+  name           String
+  slug           String   @unique
+  description    String?
+  localPath      String?
+  repositoryUrl  String?
+  techStack      String?
+  packageManager String   @default("npm")
+  startCommand   String?
+  testCommand    String?
+  buildCommand   String?
+  deployCommand  String?
+  notes          String?
+  status         String   @default("active")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  lastOpenedAt   DateTime?
+
+  commandTemplates CommandTemplate[]
+  commandRuns      CommandRun[]
+}
+
+model CommandTemplate {
+  id               String   @id @default(cuid())
+  name             String
+  description      String?
+  command          String
+  workingDirectory String?
+  projectId        String?
+  category         String   @default("custom")
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  project    Project?    @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  commandRuns CommandRun[]
+}
+
+model CommandRun {
+  id               String   @id @default(cuid())
+  projectId        String?
+  commandTemplateId String?
+  command          String
+  workingDirectory String?
+  output           String?
+  exitCode         Int?
+  status           String   @default("pending")
+  startedAt        DateTime @default(now())
+  endedAt          DateTime?
+  durationMs       Int?
+
+  project         Project?         @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  commandTemplate CommandTemplate? @relation(fields: [commandTemplateId], references: [id], onDelete: SetNull)
+}
+
+model AgentProfile {
+  id              String   @id @default(cuid())
+  name            String
+  slug            String   @unique
+  description     String?
+  category        String   @default("Custom")
+  recommendedTool String   @default("Generic")
+  systemPrompt    String
+  inputTemplate   String?
+  outputFormat    String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model IssueDraft {
+  id                 String   @id @default(cuid())
+  projectId          String?
+  issueTitle         String
+  issueBody          String?
+  environment        String?
+  expectedBehavior   String?
+  actualBehavior     String?
+  screenshots        String?
+  additionalNotes    String?
+  draftType          String?
+  draftPriority      String?
+  draftSeverity      String?
+  affectedArea       String?
+  reproductionSteps  String?
+  missingInformation String?
+  suggestedLabels    String?
+  suggestedReply     String?
+  suggestedAction    String?
+  markdownOutput     String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}
+
+model PrReviewDraft {
+  id                    String   @id @default(cuid())
+  projectId             String?
+  prTitle               String
+  prSummary             String?
+  changedFilesSummary   String?
+  testResults           String?
+  riskNotes             String?
+  documentationImpact   String?
+  reviewSummary         String?
+  riskLevel             String?
+  requiredChanges       String?
+  suggestedApproval     String?
+  suggestedChanges      String?
+  markdownOutput        String?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+}
+
+model ReleaseNote {
+  id               String   @id @default(cuid())
+  projectId        String?
+  version          String
+  releaseDate      String?
+  summary          String?
+  added            String?
+  changed          String?
+  fixed            String?
+  security         String?
+  deprecated       String?
+  removed          String?
+  breakingChanges  String?
+  migrationGuide   String?
+  contributors     String?
+  markdownOutput   String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model Setting {
+  id    String @id @default(cuid())
+  key   String @unique
+  value String
+}

@@ -1,0 +1,144 @@
+# Local Verification Checklist
+
+Use this checklist to verify AgentBoard CE works correctly after a fresh clone.
+
+## Setup
+
+1. **Install dependencies**
+   ```bash
+   npm install
+   ```
+   - [ ] No errors during install
+
+2. **Run database migration**
+   ```bash
+   npx prisma migrate dev
+   ```
+   - [ ] Migration completes successfully
+   - [ ] `prisma/dev.db` is created
+
+3. **Seed sample data**
+   ```bash
+   npm run seed
+   ```
+   - [ ] Seed completes without errors
+   - [ ] Projects, agents, and commands are created
+
+4. **Start development server**
+   ```bash
+   npm run dev
+   ```
+   - [ ] Server starts on http://localhost:3000
+
+## UI Language Verification
+
+5. **Verify English default UI**
+   - [ ] App opens in English on first visit
+   - [ ] Sidebar navigation is in English
+   - [ ] Page titles are in English
+   - [ ] Buttons and labels are in English
+
+6. **Switch to Simplified Chinese**
+   - [ ] Click globe icon in header, select "简体中文"
+   - [ ] UI switches to Chinese
+   - [ ] Sidebar navigation is in Chinese
+   - [ ] Toast message appears in Chinese
+
+7. **Switch to Russian**
+   - [ ] Click globe icon in header, select "Русский"
+   - [ ] UI switches to Russian
+   - [ ] Sidebar navigation is in Russian
+   - [ ] Toast message appears in Russian
+
+8. **Verify language persistence**
+   - [ ] Refresh the page
+   - [ ] Language choice is preserved
+
+## Feature Verification
+
+9. **Add a project**
+   - [ ] Navigate to Projects
+   - [ ] Click "Add Project"
+   - [ ] Fill in project details
+   - [ ] Project is created successfully
+
+10. **Run a command**
+    - [ ] Navigate to Terminal
+    - [ ] Select a project
+    - [ ] Enter a command (e.g., `echo "hello"`)
+    - [ ] Click Run
+    - [ ] Output is displayed
+
+11. **Generate issue triage**
+    - [ ] Navigate to Issue Triage
+    - [ ] Click "New Issue Triage"
+    - [ ] Fill in issue details
+    - [ ] Click "Generate Triage Draft"
+    - [ ] Draft is generated with labels and suggestions
+
+12. **Generate PR review**
+    - [ ] Navigate to PR Review
+    - [ ] Click "New PR Review"
+    - [ ] Fill in PR details
+    - [ ] Click "Generate Review Draft"
+    - [ ] Review draft is generated
+
+13. **Generate release notes**
+    - [ ] Navigate to Release Notes
+    - [ ] Click "New Release Note"
+    - [ ] Fill in release details
+    - [ ] Click "Generate Release Notes"
+    - [ ] Release notes are generated
+
+## Git Insights Verification
+
+13. **Verify Git Insights on project detail**
+    - [ ] Navigate to Projects
+    - [ ] Click on a project with a valid local path
+    - [ ] Git Insights section appears in the sidebar
+    - [ ] Current branch is displayed
+    - [ ] Working tree status (Clean/Dirty) is shown
+    - [ ] Remote URL is displayed (if configured)
+    - [ ] Recent commits are listed
+
+14. **Test Refresh Git Status**
+    - [ ] Click the refresh button in Git Insights
+    - [ ] Status updates and last refreshed time changes
+
+15. **Test Copy Git Summary**
+    - [ ] Click the copy button in Git Insights
+    - [ ] Toast message "Git summary copied" appears
+    - [ ] Paste clipboard — Markdown summary is correct
+
+16. **Test invalid path handling**
+    - [ ] Edit a project to have an invalid local path
+    - [ ] Navigate to project detail
+    - [ ] "Invalid local path" message appears (no crash)
+
+17. **Test non-Git folder**
+    - [ ] Edit a project to point to a non-Git folder
+    - [ ] Navigate to project detail
+    - [ ] "Not a Git repository" message appears (no crash)
+
+## Build Verification
+
+14. **Run lint**
+    ```bash
+    npm run lint
+    ```
+    - [ ] No errors
+
+15. **Run build**
+    ```bash
+    npm run build
+    ```
+    - [ ] Build completes successfully
+    - [ ] No errors or warnings
+
+## Dark Mode
+
+16. **Verify dark mode**
+    - [ ] Click theme toggle in header
+    - [ ] UI switches to dark mode
+    - [ ] All pages look correct in dark mode
+    - [ ] Switch back to light mode works
