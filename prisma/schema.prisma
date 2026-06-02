@@ -24,7 +24,11 @@ model Project {
   status         String   @default("active")
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
-  lastOpenedAt   DateTime?
+  lastOpenedAt       DateTime?
+  githubOwner        String?
+  githubRepo         String?
+  githubUrl          String?
+  githubDefaultBranch String?
 
   commandTemplates CommandTemplate[]
   commandRuns      CommandRun[]

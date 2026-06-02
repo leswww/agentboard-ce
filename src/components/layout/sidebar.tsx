@@ -14,6 +14,7 @@ import {
   BookOpen,
   Settings,
   Zap,
+  Github,
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
@@ -55,6 +56,11 @@ export function Sidebar() {
       title: t("issueTriage"),
       href: "/issues",
       icon: Bug,
+    },
+    {
+      title: t("githubIssues"),
+      href: "/github/issues",
+      icon: Github,
     },
     {
       title: t("prReview"),

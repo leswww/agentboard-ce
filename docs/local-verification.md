@@ -120,6 +120,47 @@ Use this checklist to verify AgentBoard CE works correctly after a fresh clone.
     - [ ] Navigate to project detail
     - [ ] "Not a Git repository" message appears (no crash)
 
+## GitHub Issues Verification
+
+18. **Configure GitHub token**
+    - [ ] Navigate to Settings
+    - [ ] Enter a GitHub Personal Access Token
+    - [ ] Click "Save Token"
+    - [ ] Token status shows "Token is valid" with username
+    - [ ] Raw token is not displayed (masked input)
+
+19. **Link project to GitHub repository**
+    - [ ] Navigate to a project, click Edit
+    - [ ] Enter GitHub owner and repository name
+    - [ ] Click "Parse from URL" if repository URL is set
+    - [ ] Save project
+    - [ ] GitHub fields are preserved
+
+20. **Fetch open issues**
+    - [ ] Navigate to GitHub Issues in sidebar
+    - [ ] Select the linked project
+    - [ ] Click "Fetch Issues"
+    - [ ] Open issues are listed with number, title, author, labels
+    - [ ] Pull requests are excluded from the list
+
+21. **View issue detail**
+    - [ ] Click on an issue in the list
+    - [ ] Issue detail page shows title, body, labels, metadata
+    - [ ] "Open on GitHub" button links to github.com
+    - [ ] "Copy Issue Markdown" copies formatted markdown
+
+22. **Create local triage draft**
+    - [ ] Click "Create Local Triage Draft" on an issue
+    - [ ] Local issue draft is created
+    - [ ] Navigate to the draft detail page
+    - [ ] Draft contains GitHub issue metadata in additional notes
+
+23. **Remove GitHub token**
+    - [ ] Navigate to Settings
+    - [ ] Click "Remove Token"
+    - [ ] Token status shows "Not Configured"
+    - [ ] GitHub Issues page shows missing token warning
+
 ## Build Verification
 
 14. **Run lint**

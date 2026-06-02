@@ -14,6 +14,10 @@ export const projectSchema = z.object({
   deployCommand: z.string().optional(),
   notes: z.string().optional(),
   status: z.enum(["active", "archived"]).optional(),
+  githubOwner: z.string().optional(),
+  githubRepo: z.string().optional(),
+  githubUrl: z.string().optional(),
+  githubDefaultBranch: z.string().optional(),
 });
 
 export const commandTemplateSchema = z.object({

@@ -6,9 +6,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { useTheme } from "@/components/theme-provider";
-import { Download, Upload, AlertTriangle } from "lucide-react";
+import { Download, Upload, AlertTriangle, Github, CheckCircle, XCircle, Loader2, Eye, EyeOff } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -28,6 +29,7 @@ export default function SettingsPage() {
   const router = useRouter();
   const t = useTranslations("settings");
   const tc = useTranslations("common");
+  const tg = useTranslations("github");
 
   const [settings, setSettings] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(true);
@@ -35,8 +37,20 @@ export default function SettingsPage() {
   const [showImportConfirm, setShowImportConfirm] = useState(false);
   const [importData, setImportData] = useState<string>("");
 
+  // GitHub token state
+  const [githubToken, setGithubToken] = useState("");
+  const [githubStatus, setGithubStatus] = useState<{
+    configured: boolean;
+    valid: boolean;
+    username: string | null;
+    validatedAt: string | null;
+  }>({ configured: false, valid: false, username: null, validatedAt: null });
+  const [githubLoading, setGithubLoading] = useState(false);
+  const [showToken, setShowToken] = useState(false);
+
   useEffect(() => {
     fetchSettings();
+    fetchGithubStatus();
   }, []);
 
   const fetchSettings = async () => {
@@ -76,6 +90,81 @@ export default function SettingsPage() {
     setStoredLocale(newLocale);
     toast.success(t("languageChanged"));
     router.refresh();
+  };
+
+  const fetchGithubStatus = async () => {
+    try {
+      const res = await fetch("/api/github/token");
+      if (res.ok) {
+        const data = await res.json();
+        setGithubStatus(data);
+      }
+    } catch {
+      // Silent fail for token status
+    }
+  };
+
+  const handleSaveToken = async () => {
+    if (!githubToken.trim()) return;
+    setGithubLoading(true);
+    try {
+      const res = await fetch("/api/github/token", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token: githubToken }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        toast.error(data.error || tg("tokenSaveFailed"));
+        return;
+      }
+      setGithubStatus(data);
+      setGithubToken("");
+      toast.success(tg("tokenSaved"));
+    } catch {
+      toast.error(tg("tokenSaveFailed"));
+    } finally {
+      setGithubLoading(false);
+    }
+  };
+
+  const handleValidateToken = async () => {
+    setGithubLoading(true);
+    try {
+      const res = await fetch("/api/github/validate", { method: "POST" });
+      const data = await res.json();
+      if (!res.ok) {
+        setGithubStatus((prev) => ({ ...prev, valid: false, username: null }));
+        toast.error(data.error || tg("tokenInvalid"));
+        return;
+      }
+      setGithubStatus((prev) => ({
+        ...prev,
+        valid: data.valid,
+        username: data.username,
+        validatedAt: data.validatedAt,
+      }));
+      toast.success(tg("tokenValid"));
+    } catch {
+      toast.error(tg("tokenInvalid"));
+    } finally {
+      setGithubLoading(false);
+    }
+  };
+
+  const handleRemoveToken = async () => {
+    setGithubLoading(true);
+    try {
+      const res = await fetch("/api/github/token", { method: "DELETE" });
+      if (res.ok) {
+        setGithubStatus({ configured: false, valid: false, username: null, validatedAt: null });
+        toast.success(tg("tokenRemoved"));
+      }
+    } catch {
+      toast.error(tg("tokenRemoveFailed"));
+    } finally {
+      setGithubLoading(false);
+    }
   };
 
   const handleExport = async () => {
@@ -266,6 +355,94 @@ export default function SettingsPage() {
                 ]}
               />
             </div>
+          </CardContent>
+        </Card>
+
+        <Card className="lg:col-span-2">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Github className="h-5 w-5" />
+              {tg("title")}
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <p className="text-sm text-muted-foreground">
+              {tg("description")}
+            </p>
+
+            {/* Token Status */}
+            <div className="flex items-center gap-2 p-3 border rounded-lg">
+              <span className="text-sm font-medium">{tg("tokenStatus")}:</span>
+              {githubStatus.configured && githubStatus.valid ? (
+                <Badge variant="success" className="gap-1">
+                  <CheckCircle className="h-3 w-3" />
+                  {tg("tokenValid")}
+                </Badge>
+              ) : githubStatus.configured ? (
+                <Badge variant="warning" className="gap-1">
+                  <XCircle className="h-3 w-3" />
+                  {tg("tokenInvalid")}
+                </Badge>
+              ) : (
+                <Badge variant="secondary">{tg("tokenNotConfigured")}</Badge>
+              )}
+              {githubStatus.username && (
+                <span className="text-sm text-muted-foreground">
+                  ({tg("user")}: {githubStatus.username})
+                </span>
+              )}
+            </div>
+
+            {/* Token Input */}
+            <div className="space-y-2">
+              <Label htmlFor="github-token">{tg("token")}</Label>
+              <div className="flex gap-2">
+                <div className="relative flex-1">
+                  <Input
+                    id="github-token"
+                    type={showToken ? "text" : "password"}
+                    value={githubToken}
+                    onChange={(e) => setGithubToken(e.target.value)}
+                    placeholder={tg("tokenPlaceholder")}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowToken(!showToken)}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                  >
+                    {showToken ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  </button>
+                </div>
+                <Button
+                  onClick={handleSaveToken}
+                  disabled={!githubToken.trim() || githubLoading}
+                >
+                  {githubLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : tg("saveToken")}
+                </Button>
+              </div>
+            </div>
+
+            {/* Actions */}
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                onClick={handleValidateToken}
+                disabled={!githubStatus.configured || githubLoading}
+              >
+                {tg("validateToken")}
+              </Button>
+              <Button
+                variant="outline"
+                onClick={handleRemoveToken}
+                disabled={!githubStatus.configured || githubLoading}
+              >
+                {tg("removeToken")}
+              </Button>
+            </div>
+
+            <p className="text-xs text-muted-foreground">
+              {tg("tokenHint")}
+            </p>
           </CardContent>
         </Card>
 

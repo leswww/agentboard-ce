@@ -5,9 +5,11 @@ All notable changes to AgentBoard CE will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## v0.2.0 - Git Repository Insights
+## v0.2.0 - Git Repository Insights + GitHub Issues Integration
 
 ### Added
+
+#### Git Repository Insights
 - Git Insights section on project detail pages
 - Local branch and working tree status display
 - Remote origin URL display
@@ -17,6 +19,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Refresh Git Status button
 - Graceful handling of invalid paths and non-Git folders
 - Translations for Git Insights in English, Simplified Chinese, and Russian
+
+#### GitHub Issues Integration
+- Optional GitHub token configuration in Settings
+- Token validation against GitHub API
+- Project-to-GitHub repository binding (owner/repo fields)
+- Parse owner/repo from repository URL
+- GitHub Issues list page for linked projects
+- GitHub issue detail view with body, labels, and metadata
+- Create local triage draft from GitHub issue
+- Copy issue Markdown for maintainer workflows
+- Search/filter issues by title
+- Pull request exclusion from issues list
+- Rate limit and error handling
+- English, Simplified Chinese, and Russian translations
+
+### Security
+- GitHub token stored locally only (SQLite Setting table)
+- Raw token never returned to client API responses
+- Token masked in UI with show/hide toggle
+- No automatic GitHub write actions
 
 ## v0.1.0 - Initial MVP
 

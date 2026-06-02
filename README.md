@@ -34,6 +34,16 @@ Open-source maintainers juggle multiple tools daily — terminal, issue trackers
 - Copy Git Summary for AI coding tools (Codex, Claude, Cursor)
 - Refresh Git Status on demand
 
+### GitHub Issues Integration (Optional)
+- Configure a GitHub Personal Access Token in Settings
+- Link projects to GitHub repositories
+- Fetch and browse open issues from linked repos
+- View issue details with body, labels, and metadata
+- Create local triage drafts from GitHub issues
+- Copy issue Markdown for maintainer workflows
+- Pull requests are excluded from the issues list
+- Token stored locally only — no cloud sync, no telemetry
+
 ### Command Templates
 - Reusable command templates for common tasks
 - Categories: dev, build, test, deploy, git, custom
@@ -255,7 +265,7 @@ agentboard-ce/
 | Version | Focus |
 |---------|-------|
 | v0.1.0 | Local MVP and open-source release |
-| v0.2.0 | Git status and local repository insights |
+| v0.2.0 | Git insights + GitHub Issues integration |
 | v0.3.0 | GitHub Issues and Pull Requests integration |
 | v0.4.0 | Codex/OpenAI maintainer workflows |
 | v0.5.0 | Desktop packaging with Tauri or Electron |

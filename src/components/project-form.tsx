@@ -25,11 +25,13 @@ export function ProjectForm({ initialData, projectId }: ProjectFormProps) {
   const t = useTranslations("projects");
   const tc = useTranslations("common");
   const tt = useTranslations("toasts");
+  const tg = useTranslations("github");
 
   const {
     register,
     handleSubmit,
     setValue,
+    getValues,
     formState: { errors, isSubmitting },
   } = useForm<ProjectInput>({
     resolver: zodResolver(projectSchema),
@@ -47,6 +49,10 @@ export function ProjectForm({ initialData, projectId }: ProjectFormProps) {
       deployCommand: initialData?.deployCommand || "",
       notes: initialData?.notes || "",
       status: initialData?.status || "active",
+      githubOwner: initialData?.githubOwner || "",
+      githubRepo: initialData?.githubRepo || "",
+      githubUrl: initialData?.githubUrl || "",
+      githubDefaultBranch: initialData?.githubDefaultBranch || "",
     },
   });
 
@@ -56,6 +62,25 @@ export function ProjectForm({ initialData, projectId }: ProjectFormProps) {
     if (!isEditing) {
       setValue("slug", slugify(value));
     }
+  };
+
+  const handleParseFromUrl = () => {
+    const url = (getValues("repositoryUrl") || "").trim();
+    if (!url) return;
+
+    // Parse GitHub URLs
+    // https://github.com/owner/repo
+    // https://github.com/owner/repo.git
+    // git@github.com:owner/repo.git
+    const httpsMatch = url.match(/github\.com[:/]([^/]+)\/([^/.]+)(?:\.git)?$/);
+    if (httpsMatch) {
+      setValue("githubOwner", httpsMatch[1]);
+      setValue("githubRepo", httpsMatch[2]);
+      toast.success(tg("parsedFromUrl"));
+      return;
+    }
+
+    toast.error(tg("invalidGithubUrl"));
   };
 
   const onSubmit = async (data: ProjectInput) => {
@@ -231,6 +256,61 @@ export function ProjectForm({ initialData, projectId }: ProjectFormProps) {
               rows={4}
             />
           </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>{tg("repository")}</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            {tg("repositoryDesc")}
+          </p>
+          <div className="grid gap-4 md:grid-cols-2">
+            <div className="space-y-2">
+              <Label htmlFor="githubOwner">{tg("owner")}</Label>
+              <Input
+                id="githubOwner"
+                {...register("githubOwner")}
+                placeholder={tg("ownerPlaceholder")}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="githubRepo">{tg("repo")}</Label>
+              <Input
+                id="githubRepo"
+                {...register("githubRepo")}
+                placeholder={tg("repoPlaceholder")}
+              />
+            </div>
+          </div>
+          <div className="grid gap-4 md:grid-cols-2">
+            <div className="space-y-2">
+              <Label htmlFor="githubUrl">{tg("repoUrl")}</Label>
+              <Input
+                id="githubUrl"
+                {...register("githubUrl")}
+                placeholder={tg("repoUrlPlaceholder")}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="githubDefaultBranch">{tg("defaultBranch")}</Label>
+              <Input
+                id="githubDefaultBranch"
+                {...register("githubDefaultBranch")}
+                placeholder={tg("defaultBranchPlaceholder")}
+              />
+            </div>
+          </div>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={handleParseFromUrl}
+          >
+            {tg("parseFromUrl")}
+          </Button>
         </CardContent>
       </Card>
 

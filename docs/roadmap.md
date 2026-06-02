@@ -35,10 +35,10 @@ This document outlines the planned features and improvements for AgentBoard CE.
 
 ## v0.3.0 — GitHub Issues and Pull Requests Integration
 
-- [ ] GitHub API integration
-- [ ] Import issues from GitHub repositories
+- [x] GitHub API integration
+- [x] Import issues from GitHub repositories
 - [ ] Sync pull request data
-- [ ] Create issues from triage drafts
+- [x] Create issues from triage drafts
 - [ ] Post PR review comments to GitHub
 - [ ] Repository webhook support
 - [ ] CI/CD status display

@@ -51,6 +51,10 @@ export default async function EditProjectPage({ params }: EditProjectPageProps) 
           deployCommand: project.deployCommand ?? undefined,
           notes: project.notes ?? undefined,
           status: project.status as "active" | "archived",
+          githubOwner: project.githubOwner ?? undefined,
+          githubRepo: project.githubRepo ?? undefined,
+          githubUrl: project.githubUrl ?? undefined,
+          githubDefaultBranch: project.githubDefaultBranch ?? undefined,
         }}
         projectId={project.id}
       />
