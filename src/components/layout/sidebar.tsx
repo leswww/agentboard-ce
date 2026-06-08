@@ -63,6 +63,11 @@ export function Sidebar() {
       icon: Github,
     },
     {
+      title: t("githubPRs"),
+      href: "/github/pull-requests",
+      icon: GitPullRequest,
+    },
+    {
       title: t("prReview"),
       href: "/pr-reviews",
       icon: GitPullRequest,
@@ -144,7 +149,7 @@ export function Sidebar() {
       <div className="p-4 border-t">
         {!collapsed && (
           <div className="text-xs text-muted-foreground">
-            AgentBoard CE v0.2.0
+            AgentBoard CE v0.3.0
           </div>
         )}
       </div>

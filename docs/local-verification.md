@@ -161,6 +161,49 @@ Use this checklist to verify AgentBoard CE works correctly after a fresh clone.
     - [ ] Token status shows "Not Configured"
     - [ ] GitHub Issues page shows missing token warning
 
+## GitHub Pull Requests Verification
+
+24. **Fetch open pull requests**
+    - [ ] Navigate to GitHub PRs in sidebar
+    - [ ] Select the linked project
+    - [ ] Click "Fetch Pull Requests"
+    - [ ] Open pull requests are listed with number, title, author, branches, and stats
+    - [ ] Draft PRs show draft badge
+
+25. **Filter pull requests**
+    - [ ] Change state filter to "Closed"
+    - [ ] Click "Fetch Pull Requests"
+    - [ ] Closed pull requests are listed
+    - [ ] Change to "All" and verify both open and closed appear
+
+26. **Search pull requests**
+    - [ ] Type in the search box
+    - [ ] PR list filters by title in real-time
+
+27. **View PR detail**
+    - [ ] Click on a pull request in the list
+    - [ ] PR detail page shows title, body, branches, metadata
+    - [ ] Changed files list shows filenames, status, additions/deletions
+    - [ ] Patch preview is shown for files
+    - [ ] Commits list shows recent commits
+    - [ ] "Open on GitHub" button links to github.com
+
+28. **Copy PR Markdown**
+    - [ ] Click "Copy PR Markdown" on a PR detail
+    - [ ] Toast message appears
+    - [ ] Paste clipboard — formatted markdown with PR info, files, and commits
+
+29. **Copy Review Checklist**
+    - [ ] Click "Copy Review Checklist" on a PR detail
+    - [ ] Toast message appears
+    - [ ] Paste clipboard — review checklist markdown
+
+30. **Create local PR review draft**
+    - [ ] Click "Create Local PR Review Draft" on a PR detail
+    - [ ] Local PR review draft is created
+    - [ ] Navigate to the draft detail page
+    - [ ] Draft contains GitHub PR metadata in summary
+
 ## Build Verification
 
 14. **Run lint**

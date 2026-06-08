@@ -5,6 +5,33 @@ All notable changes to AgentBoard CE will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## v0.3.0 - GitHub Pull Requests Integration
+
+### Added
+
+- Optional GitHub Pull Requests list for linked projects
+- Pull request detail view with metadata, body, and labels
+- Changed files overview with filename, status, additions, and deletions
+- Patch preview for changed files (compact, truncated for large diffs)
+- Recent commits overview per pull request
+- Create local PR Review Draft from GitHub PR
+- Copy PR Markdown for maintainer workflows
+- Copy PR Review Checklist Markdown
+- PR state filter (open, closed, all)
+- Search/filter pull requests by title
+- Mergeable and draft status display
+- Source and target branch display
+- English, Simplified Chinese, and Russian translations
+- Sidebar navigation item for GitHub PRs
+
+### Security
+
+- Read-only GitHub API usage
+- No automatic GitHub comments
+- No automatic merges
+- No automatic branch changes
+- GitHub token remains local and server-side only
+
 ## v0.2.0 - Git Repository Insights + GitHub Issues Integration
 
 ### Added

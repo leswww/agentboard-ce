@@ -231,7 +231,14 @@ AgentBoard CE is designed to integrate with AI coding agents for enhanced produc
 
 ### PR Review Workflow
 
-1. **Create PR Review**
+1. **Create PR Review from GitHub**
+   - Go to GitHub PRs in AgentBoard CE
+   - Select a linked project and fetch pull requests
+   - Open a PR detail view
+   - Click "Create Local PR Review Draft"
+   - Review draft is generated with risk assessment
+
+2. **Create PR Review Manually**
    - Go to PR Review in AgentBoard CE
    - Fill in PR details
    - Generate review draft

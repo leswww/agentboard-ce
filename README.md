@@ -44,6 +44,16 @@ Open-source maintainers juggle multiple tools daily — terminal, issue trackers
 - Pull requests are excluded from the issues list
 - Token stored locally only — no cloud sync, no telemetry
 
+### GitHub Pull Requests Integration (Optional)
+- Fetch and browse pull requests from linked GitHub repos
+- Filter by state (open, closed, all) and search by title
+- View PR detail with metadata, body, changed files, and commits
+- Changed files overview with filename, status, additions/deletions, and patch preview
+- Create local PR Review Drafts from GitHub PRs
+- Copy PR Markdown for maintainer workflows
+- Copy PR Review Checklist Markdown
+- Read-only — no automatic GitHub write actions
+
 ### Command Templates
 - Reusable command templates for common tasks
 - Categories: dev, build, test, deploy, git, custom
@@ -249,6 +259,7 @@ agentboard-ce/
 │   │   ├── release-notes/# Release notes
 │   │   ├── docs/         # Documentation
 │   │   └── settings/     # Settings
+│   │   └── github/       # GitHub integration (issues, pull requests)
 │   ├── components/       # React components
 │   ├── i18n/             # Internationalization config
 │   └── lib/              # Utility functions
@@ -266,7 +277,7 @@ agentboard-ce/
 |---------|-------|
 | v0.1.0 | Local MVP and open-source release |
 | v0.2.0 | Git insights + GitHub Issues integration |
-| v0.3.0 | GitHub Issues and Pull Requests integration |
+| v0.3.0 | GitHub Pull Requests integration |
 | v0.4.0 | Codex/OpenAI maintainer workflows |
 | v0.5.0 | Desktop packaging with Tauri or Electron |
 | v1.0.0 | Stable local-first maintainer workspace |

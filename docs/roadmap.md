@@ -37,7 +37,10 @@ This document outlines the planned features and improvements for AgentBoard CE.
 
 - [x] GitHub API integration
 - [x] Import issues from GitHub repositories
-- [ ] Sync pull request data
+- [x] Fetch and browse pull requests
+- [x] Pull request detail with changed files and commits
+- [x] Create local PR Review Draft from GitHub PR
+- [x] Copy PR Markdown and review checklist
 - [x] Create issues from triage drafts
 - [ ] Post PR review comments to GitHub
 - [ ] Repository webhook support
