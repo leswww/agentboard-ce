@@ -35,8 +35,22 @@ If you discover a security vulnerability in AgentBoard CE, please report it resp
 ### Data Storage
 
 - All data is stored locally in SQLite
-- No data is sent to external servers
+- No data is sent to external servers (except optional AI API calls)
 - No telemetry or tracking
+
+### AI API Key Security (v0.4.0+)
+
+- API key is stored in the local SQLite Setting table only
+- Raw API key is never returned to the client in API responses
+- API key is masked in the UI (password input with show/hide toggle)
+- API key is never included in:
+  - Copied Markdown output
+  - Browser console logs
+  - Error messages returned to the client
+  - AI request audit log entries
+- AI audit log stores only input summaries and output previews
+- API key is sent only to the configured AI provider endpoint
+- Users can validate and remove AI settings at any time
 
 ### Command Execution
 

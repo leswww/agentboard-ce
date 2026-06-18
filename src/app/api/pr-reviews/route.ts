@@ -26,6 +26,13 @@ export async function POST(request: Request) {
       testResults,
       riskNotes,
       documentationImpact,
+      // AI-generated fields (pre-populated)
+      reviewSummary,
+      riskLevel,
+      requiredChanges,
+      suggestedApproval,
+      suggestedChanges,
+      markdownOutput,
     } = body;
 
     if (!prTitle) {
@@ -35,8 +42,10 @@ export async function POST(request: Request) {
       );
     }
 
-    // Generate review draft
-    const reviewResult = generateReviewDraft({
+    // If AI-generated fields are provided, use them directly
+    const reviewResult = reviewSummary
+      ? { reviewSummary, riskLevel, requiredChanges, suggestedApproval, suggestedChanges, markdownOutput }
+      : generateReviewDraft({
       prTitle,
       prSummary,
       changedFilesSummary,

@@ -32,6 +32,7 @@ export async function POST(request: Request) {
       breakingChanges,
       migrationGuide,
       contributors,
+      markdownOutput: preGeneratedMarkdown,
     } = body;
 
     if (!version) {
@@ -41,8 +42,8 @@ export async function POST(request: Request) {
       );
     }
 
-    // Generate markdown output
-    const markdownOutput = generateReleaseNotesMarkdown({
+    // Use pre-generated markdown (e.g. from AI) or generate from template
+    const markdownOutput = preGeneratedMarkdown || generateReleaseNotesMarkdown({
       version,
       releaseDate,
       summary,

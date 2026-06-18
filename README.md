@@ -91,6 +91,17 @@ Open-source maintainers juggle multiple tools daily — terminal, issue trackers
 ### Documentation
 - Built-in documentation and getting started guides
 
+### Codex/OpenAI-Assisted Workflows (Optional)
+- **AI Settings**: Configure OpenAI or OpenAI-compatible providers locally
+- **AI-Assisted Issue Triage**: Generate structured triage drafts with AI
+- **AI-Assisted PR Review**: Generate code review drafts with AI
+- **AI-Assisted Release Notes**: Generate release notes with AI
+- **AI-Assisted Documentation Suggestions**: Generate doc update suggestions
+- **AI Request History**: Local audit log of AI-assisted workflow requests
+- **No API key required**: All non-AI features work without configuration
+- **Editable drafts**: All AI output is editable before saving
+- **No automatic GitHub write actions**: AI never writes to GitHub automatically
+
 ### Settings
 - Theme customization (light/dark/system)
 - Language selection (English, Simplified Chinese, Russian)
@@ -237,7 +248,7 @@ AgentBoard CE is designed with privacy in mind:
 
 - **No telemetry**: Zero data collection or tracking.
 - **No cloud sync**: All data stays on your machine.
-- **No API keys required**: The current MVP works entirely offline.
+- **No API keys required**: Core features work entirely offline. AI features are optional.
 - **Local SQLite database**: Your data is stored in a local file (`prisma/dev.db`).
 - **No user accounts**: No authentication, no sessions, no accounts.
 - **Open source**: Inspect every line of code.
@@ -284,16 +295,19 @@ agentboard-ce/
 
 See [docs/roadmap.md](docs/roadmap.md) for details.
 
-## Codex/OpenAI Workflow Plan
+## Codex/OpenAI Workflows
 
-Future versions will integrate with AI coding agents for:
+AgentBoard CE includes optional Codex/OpenAI-assisted maintainer workflows:
 
-- Automated issue triage and categorization
-- AI-assisted PR review with risk assessment
-- Test failure analysis and suggestions
-- Release notes generation from git history
-- Documentation update suggestions
-- Code quality checks and refactoring plans
+- **Issue Triage**: Generate structured triage drafts with type, priority, severity, and suggested actions
+- **PR Review**: Generate code review drafts with risk assessment and suggested comments
+- **Release Notes**: Generate release notes following Keep a Changelog format
+- **Documentation Suggestions**: Generate documentation update suggestions from project changes
+
+All AI workflows require:
+1. An OpenAI or OpenAI-compatible API key configured in Settings
+2. AI features to be enabled
+3. Human review of all AI-generated content
 
 See [docs/codex-workflows.md](docs/codex-workflows.md) for details.
 

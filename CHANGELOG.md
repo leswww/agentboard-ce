@@ -5,6 +5,31 @@ All notable changes to AgentBoard CE will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## v0.4.0 - Codex-assisted Maintainer Workflows
+
+### Added
+
+- Optional AI/Codex settings with OpenAI and OpenAI-compatible provider support
+- AI-assisted GitHub Issue triage drafts with type, priority, severity, and suggested actions
+- AI-assisted GitHub Pull Request review drafts with risk assessment and security notes
+- AI-assisted release notes generation following Keep a Changelog format
+- AI-assisted documentation update suggestions for README, changelog, and installation docs
+- Local AI request history/audit log for transparency
+- AI Settings section in Settings page with Save, Validate, and Remove actions
+- AI Request History page to review past AI-assisted workflow requests
+- Documentation Suggestions page for generating doc update suggestions
+- English, Simplified Chinese, and Russian translations for all AI features
+
+### Security
+
+- API key stored locally only in SQLite Setting table
+- Raw API key is never returned to the client
+- API key is masked in the UI with show/hide toggle
+- API key is not logged or exposed in error messages
+- No automatic GitHub write actions
+- All AI output is editable drafts requiring human review
+- Safety notice displayed on all AI-assisted workflows
+
 ## v0.3.0 - GitHub Pull Requests Integration
 
 ### Added

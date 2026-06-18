@@ -1,361 +1,221 @@
-# Codex/OpenAI Workflows
+# Codex/OpenAI-Assisted Maintainer Workflows
 
-This document describes how to use AgentBoard CE with Codex and other AI coding agents.
+This document describes the optional AI-assisted maintainer workflows available in AgentBoard CE v0.4.0+.
 
 ## Overview
 
-AgentBoard CE is designed to integrate with AI coding agents for enhanced productivity. While v0.1.0 focuses on local-first features, future versions will support direct API integration.
-
-## Supported Agents
-
-### Codex (OpenAI)
-
-**Best For**: Engineering, logic, architecture, bug fixes, and tests
-
-**Use Cases**:
-- Code generation
-- Bug fixing
-- Architecture design
-- Test writing
-- Code refactoring
-
-**Example Workflow**:
-1. Create a Bug Fixer agent profile in AgentBoard CE
-2. Copy the system prompt
-3. Use with Codex API or ChatGPT
-4. Paste the generated fix back into your project
-
-### Claude (Anthropic)
-
-**Best For**: Code analysis, documentation, and review
-
-**Use Cases**:
-- Code review
-- Documentation writing
-- Architecture analysis
-- Bug investigation
-- Test planning
-
-**Example Workflow**:
-1. Create a Code Reviewer agent profile
-2. Copy the system prompt
-3. Use with Claude API or claude.ai
-4. Apply the review suggestions
-
-### Antigravity
-
-**Best For**: UI design, visual polish, and interaction design
-
-**Use Cases**:
-- UI component design
-- Visual styling
-- Animation implementation
-- Interaction patterns
-- Responsive design
-
-**Example Workflow**:
-1. Create a UI Reviewer agent profile
-2. Copy the system prompt
-3. Use with Antigravity
-4. Implement the design suggestions
-
-### Cursor
-
-**Best For**: Code completion and refactoring
-
-**Use Cases**:
-- Code completion
-- Refactoring suggestions
-- Bug detection
-- Performance optimization
-- Code formatting
-
-## Agent Profile Categories
-
-### Bug Fixer
-
-**Purpose**: Diagnose and fix bugs efficiently
-
-**System Prompt Features**:
-- Structured debugging approach
-- Root cause analysis
-- Fix verification
-- Regression prevention
-
-**Input Template**:
-```markdown
-## Bug Report
-**Title:** {{title}}
-**Description:** {{description}}
-**Error Message:** {{errorMessage}}
-**Stack Trace:** {{stackTrace}}
-**Steps to Reproduce:** {{steps}}
-**Expected Behavior:** {{expected}}
-**Actual Behavior:** {{actual}}
-```
-
-### Code Reviewer
-
-**Purpose**: Thorough code reviews with actionable feedback
-
-**System Prompt Features**:
-- Code quality assessment
-- Security review
-- Performance analysis
-- Best practices check
-
-**Input Template**:
-```markdown
-## Code Review Request
-**PR Title:** {{prTitle}}
-**Summary:** {{summary}}
-**Changed Files:** {{changedFiles}}
-**Context:** {{context}}
-```
-
-### UI Reviewer
-
-**Purpose**: Visual design and UX review
-
-**System Prompt Features**:
-- Visual hierarchy
-- Color usage
-- Typography
-- Responsive design
-- Accessibility
-
-**Input Template**:
-```markdown
-## UI Review Request
-**Component/Page:** {{component}}
-**Description:** {{description}}
-**Design Spec:** {{designSpec}}
-**Screenshots:** {{screenshots}}
-```
-
-### Security Checker
-
-**Purpose**: Identify security vulnerabilities
-
-**System Prompt Features**:
-- OWASP Top 10
-- Input validation
-- Authentication review
-- Data protection
-
-### Docs Writer
-
-**Purpose**: Create clear documentation
-
-**System Prompt Features**:
-- API documentation
-- Getting started guides
-- Code comments
-- README files
-
-### Release Assistant
-
-**Purpose**: Prepare releases and changelogs
-
-**System Prompt Features**:
-- Changelog generation
-- Breaking change identification
-- Migration guides
-- Version planning
-
-### Test Writer
-
-**Purpose**: Create comprehensive tests
-
-**System Prompt Features**:
-- Unit tests
-- Integration tests
-- Test coverage
-- Edge cases
-
-### Refactor Planner
-
-**Purpose**: Plan code refactoring
-
-**System Prompt Features**:
-- Code smell identification
-- Refactoring steps
-- Risk assessment
-- Backward compatibility
-
-## Workflow Examples
-
-### Bug Fix Workflow
-
-1. **Report Bug**
-   - Go to Issue Triage in AgentBoard CE
-   - Fill in bug details
-   - Generate triage draft
-
-2. **Analyze with AI**
-   - Copy the triage draft
-   - Use Bug Fixer agent profile with Codex/Claude
-   - Get root cause analysis
-
-3. **Implement Fix**
-   - Apply the suggested fix
-   - Run tests
-   - Update documentation
-
-4. **Review**
-   - Use Code Reviewer agent profile
-   - Get review feedback
-   - Address comments
-
-### Feature Development Workflow
-
-1. **Plan Feature**
-   - Create issue draft
-   - Define requirements
-   - Plan implementation
-
-2. **Develop**
-   - Write code
-   - Use Test Writer agent for tests
-   - Use Docs Writer for documentation
-
-3. **Review**
-   - Use Code Reviewer for code review
-   - Use UI Reviewer for UI changes
-   - Use Security Checker for security review
-
-4. **Release**
-   - Use Release Assistant for changelog
-   - Generate release notes
-   - Create migration guide
-
-### PR Review Workflow
-
-1. **Create PR Review from GitHub**
-   - Go to GitHub PRs in AgentBoard CE
-   - Select a linked project and fetch pull requests
-   - Open a PR detail view
-   - Click "Create Local PR Review Draft"
-   - Review draft is generated with risk assessment
-
-2. **Create PR Review Manually**
-   - Go to PR Review in AgentBoard CE
-   - Fill in PR details
-   - Generate review draft
-
-2. **AI Analysis**
-   - Use Code Reviewer agent profile
-   - Get detailed review
-   - Identify issues
-
-3. **Provide Feedback**
-   - Use suggested comments
-   - Request changes or approve
-   - Track resolution
-
-## API Integration (Future)
-
-### Codex API
-
-```javascript
-// Example: Using Codex API with AgentBoard CE
-const response = await fetch('https://api.openai.com/v1/completions', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-    'Authorization': `Bearer ${apiKey}`,
-  },
-  body: JSON.stringify({
-    model: 'code-davinci-002',
-    prompt: systemPrompt + '\n\n' + userPrompt,
-    max_tokens: 1000,
-    temperature: 0.7,
-  }),
-});
-```
-
-### Claude API
-
-```javascript
-// Example: Using Claude API with AgentBoard CE
-const response = await fetch('https://api.anthropic.com/v1/messages', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-    'x-api-key': apiKey,
-  },
-  body: JSON.stringify({
-    model: 'claude-3-opus-20240229',
-    max_tokens: 1000,
-    messages: [
-      { role: 'user', content: userPrompt }
-    ],
-    system: systemPrompt,
-  }),
-});
-```
-
-## Best Practices
-
-### Prompt Engineering
-
-1. **Be Specific**: Provide clear, detailed instructions
-2. **Use Examples**: Include examples when possible
-3. **Set Constraints**: Define output format and length
-4. **Iterate**: Refine prompts based on results
-
-### Agent Selection
-
-1. **Match Task to Agent**: Use the right agent for the task
-2. **Consider Strengths**: Each agent has different capabilities
-3. **Combine Agents**: Use multiple agents for complex tasks
-4. **Test Prompts**: Try different prompts for better results
-
-### Workflow Optimization
-
-1. **Automate Repetition**: Use templates for common tasks
-2. **Batch Processing**: Process multiple items together
-3. **Review Output**: Always review AI-generated content
-4. **Learn from Results**: Improve prompts based on feedback
+AgentBoard CE includes optional Codex/OpenAI-assisted workflows to help open-source maintainers with common tasks. These features are fully optional — the app works without any AI configuration.
+
+### Key Design Principles
+
+- **Local-first**: AI settings are stored locally in SQLite
+- **Human-in-the-loop**: All AI output is an editable draft requiring human review
+- **No automatic GitHub write actions**: AgentBoard CE never posts AI output to GitHub
+- **Privacy**: API key stays server-side, never returned to the client
+- **Optional**: All non-AI features work without configuration
+
+## Prerequisites
+
+1. An OpenAI API key (or OpenAI-compatible provider)
+2. Configure AI Settings in AgentBoard CE Settings page
+
+## Workflows
+
+### 1. Issue Triage Workflow
+
+The AI-assisted issue triage workflow helps maintainers quickly categorize and respond to incoming issues.
+
+**How to use:**
+
+1. Go to **Issue Triage > New Issue Triage**
+2. Fill in the issue details (title, body, environment, etc.)
+3. Scroll to the **AI Assistant** section
+4. Click **"Generate with Codex"**
+5. Review the generated triage in the **AI draft** section
+6. Click **"Save AI Draft"** to persist with the AI-generated content
+7. Alternatively, click **"Copy AI Markdown"** to use elsewhere
+
+**Generated fields:**
+- Type (Bug, Feature, Question, Docs, Maintenance)
+- Priority (Critical, High, Medium, Low)
+- Severity (Critical, Major, Minor, Trivial)
+- Affected Area
+- Reproduction Steps
+- Missing Information
+- Suggested Labels
+- Suggested Maintainer Reply
+- Suggested Next Action
+
+**Safety notices:**
+- "AI output is a draft. Review before use." badge on all AI-generated content
+- "AgentBoard CE does not automatically write AI output back to GitHub."
+
+### 2. PR Review Workflow
+
+The AI-assisted PR review workflow helps maintainers generate structured code review drafts.
+
+**How to use:**
+
+1. Go to **PR Review > New PR Review**
+2. Fill in the PR details (title, summary, changed files, etc.)
+3. Scroll to the **AI Assistant** section
+4. Click **"Generate with Codex"**
+5. Review the generated review in the **AI draft** section
+6. Generated content includes risk level and suggested comments
+7. Save or copy the generated review
+
+**Generated fields:**
+- Review Summary
+- Risk Level (Low, Medium, High)
+- Required Changes
+- Suggested Approval Comment
+- Suggested Request-Changes Comment
+- Test Focus Areas
+- Documentation Impact
+- Security Notes
+
+**Important:**
+- AI output is a draft only — never posted to GitHub automatically
+- No automatic PR approval or merge
+- Always review before using
+
+### 3. Release Notes Workflow
+
+The AI-assisted release notes workflow helps maintainers generate structured release notes.
+
+**How to use:**
+
+1. Go to **Release Notes > New Release Note**
+2. Enter the version number
+3. Optionally fill in existing change notes
+4. Scroll to the **AI Assistant** section
+5. Click **"Generate with Codex"**
+6. Review the generated release notes in the **AI draft** section
+7. The AI generates output in Keep a Changelog format
+8. Edit, save, or copy the generated content
+
+**Generated fields:**
+- Summary / Highlights
+- Added
+- Changed
+- Fixed
+- Security
+- Breaking Changes
+- Migration Guide
+- Contributors
+
+### 4. Documentation Suggestions Workflow
+
+The documentation suggestions workflow helps maintainers identify what documentation needs updating based on project changes.
+
+**How to use:**
+
+1. Go to **Docs Suggestions** in the sidebar
+2. Enter the project name and a summary of changes
+3. Optionally provide affected features, diff summary, and git summary
+4. Click **"Generate Documentation Suggestions"**
+5. Review each suggestion section
+6. Copy sections individually as needed
+
+**Generated sections:**
+- README update suggestions
+- Changelog update suggestions
+- Installation documentation update suggestions
+- Migration notes
+- FAQ / Troubleshooting notes
+
+**Note:** Suggestions are markdown text only — no files are automatically edited or committed.
+
+## AI Settings
+
+### Provider Options
+
+| Provider | Description |
+|----------|-------------|
+| Disabled | AI features turned off |
+| OpenAI | Standard OpenAI API (api.openai.com) |
+| OpenAI-compatible | Any OpenAI-compatible API (e.g., local LLM, Azure OpenAI, etc.) |
+
+### Configuration Fields
+
+- **API Key**: Your OpenAI API key (stored locally, masked in UI)
+- **Base URL**: API endpoint URL (default: https://api.openai.com/v1)
+- **Model**: Model name (default: gpt-4o)
+- **AI enabled**: Toggle all AI features
+
+### Security
+
+- API key stored in SQLite via the Setting table
+- Raw API key is never returned to the client
+- API key is masked in the UI (password input with toggle)
+- API key is never included in:
+  - API responses
+  - Browser console logs
+  - Error messages
+  - Copied Markdown output
+- AI requests are logged to a local audit log (AiRequestLog table)
+- The audit log stores input summaries and output previews only
+  - Full prompts and API keys are not stored in the audit log
+
+## Request History / Audit Log
+
+Every AI-assisted workflow request is logged locally for transparency:
+
+- **Workflow type**: Which workflow was used
+- **Project**: Optional project name
+- **Model**: AI model used
+- **Status**: completed / failed
+- **Input summary**: Safe summary of the input (no full prompts)
+- **Output preview**: Preview of the output (no full content)
+- **Error message**: Error details if failed
+- **Created at**: Timestamp
+
+Access the AI Request History page from the sidebar.
+
+## Human-in-the-Loop Design
+
+Every AI-assisted workflow follows these principles:
+
+1. **User initiates**: AI generation starts only on explicit user action
+2. **Draft only**: AI output populates editable form fields
+3. **Review required**: "AI draft" badge and "Review before use" notice are always visible
+4. **Manual save**: User explicitly saves or discards the draft
+5. **No automation**: AgentBoard CE never:
+   - Comments on GitHub issues or PRs
+   - Edits GitHub labels
+   - Closes GitHub issues
+   - Approves or merges PRs
+   - Creates commits or branches
 
 ## Troubleshooting
 
-### Common Issues
+### AI request fails
 
-1. **Poor Quality Output**
-   - Refine the system prompt
-   - Add more context
-   - Use examples
+1. Check that AI is enabled in Settings
+2. Validate your API key in Settings
+3. Check the AI Request History page for error details
+4. Verify your Base URL is correct for your provider
+5. Check that the model name is valid for your provider
 
-2. **Incorrect Format**
-   - Specify output format clearly
-   - Use templates
-   - Validate output
+### AI output is low quality
 
-3. **Missing Context**
-   - Provide more background
-   - Include relevant code
-   - Add constraints
+1. Provide more detailed input
+2. Try a different model
+3. Check the AI Request History for error patterns
+4. The generated output is a draft — edit it as needed
 
-### Getting Help
+### Missing configuration message
 
-1. Check agent profile documentation
-2. Review example workflows
-3. Experiment with different prompts
-4. Share successful prompts with community
+If you see "AI is not configured" on an AI-assisted workflow:
+1. Go to Settings
+2. Configure an AI provider with a valid API key
+3. Enable AI features
+4. Return to the workflow
 
-## Resources
+## Privacy
 
-- [OpenAI Codex Documentation](https://platform.openai.com/docs/guides/code)
-- [Anthropic Claude Documentation](https://docs.anthropic.com/claude)
-- [Prompt Engineering Guide](https://www.promptingguide.ai/)
-- [AgentBoard CE Examples](https://github.com/YOUR_USERNAME/agentboard-ce-examples)
-
-## Contributing
-
-Help improve agent profiles and workflows:
-
-1. Share successful prompts
-2. Report issues
-3. Suggest improvements
-4. Add new agent profiles
+- AI requests are sent to your configured AI provider's API
+- AgentBoard CE does not collect or transmit any data beyond what you explicitly submit
+- No telemetry, no tracking, no cloud sync
+- Your API key stays on your machine
+- All AI requests are logged locally for your transparency

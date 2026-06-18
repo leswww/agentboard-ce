@@ -46,15 +46,19 @@ This document outlines the planned features and improvements for AgentBoard CE.
 - [ ] Repository webhook support
 - [ ] CI/CD status display
 
-## v0.4.0 — Codex/OpenAI Maintainer Workflows
+## v0.4.0 — Codex/OpenAI Maintainer Workflows ✅
 
-- [ ] OpenAI API integration for issue triage
-- [ ] AI-assisted PR review with risk assessment
-- [ ] Test failure analysis and suggestions
-- [ ] Release notes generation from git history
-- [ ] Documentation update suggestions
-- [ ] Code quality checks and refactoring plans
-- [ ] Maintainer automation workflows
+- [x] OpenAI/OpenAI-compatible API provider configuration
+- [x] AI-assisted issue triage drafts
+- [x] AI-assisted PR review drafts
+- [x] AI-assisted release notes generation
+- [x] AI-assisted documentation update suggestions
+- [x] AI request history / audit log
+- [x] API key security (local-only, masked, no client exposure)
+- [x] Multilingual UI (English, Simplified Chinese, Russian)
+- [ ] Streaming AI responses
+- [ ] Custom AI provider prompts
+- [ ] Batch AI processing
 
 See [docs/codex-workflows.md](codex-workflows.md) for detailed plans.
 

@@ -204,15 +204,78 @@ Use this checklist to verify AgentBoard CE works correctly after a fresh clone.
     - [ ] Navigate to the draft detail page
     - [ ] Draft contains GitHub PR metadata in summary
 
+## AI/Codex Workflows Verification
+
+14. **Configure AI settings**
+    - [ ] Navigate to Settings
+    - [ ] Select AI Provider (e.g., "OpenAI" or "OpenAI-compatible")
+    - [ ] Enter a valid API Key
+    - [ ] Enter Base URL (default: https://api.openai.com/v1)
+    - [ ] Enter Model (default: gpt-4o)
+    - [ ] Check "AI enabled"
+    - [ ] Click "Save AI Settings"
+    - [ ] Status shows "Configured"
+
+15. **Validate AI settings**
+    - [ ] Click "Validate" button
+    - [ ] Status shows "Configured & Valid"
+    - [ ] Status badge turns green
+
+16. **Generate AI issue triage draft**
+    - [ ] Navigate to Issue Triage > New Issue Triage
+    - [ ] Fill in issue title and body
+    - [ ] Click "Generate with Codex" in the AI Assistant section
+    - [ ] Wait for AI generation to complete
+    - [ ] AI draft badge appears
+    - [ ] Generated fields are populated (type, priority, severity, etc.)
+    - [ ] "Review before use" notice is displayed
+    - [ ] Copy AI Markdown works
+    - [ ] Save draft creates the issue with AI-generated content
+
+17. **Generate AI PR review draft**
+    - [ ] Navigate to PR Review > New PR Review
+    - [ ] Fill in PR title and details
+    - [ ] Click "Generate with Codex" in the AI Assistant section
+    - [ ] Wait for AI generation to complete
+    - [ ] AI draft badge appears
+    - [ ] Risk level, review summary, and suggestions are populated
+
+18. **Generate AI release notes**
+    - [ ] Navigate to Release Notes > New Release Note
+    - [ ] Enter version number
+    - [ ] Click "Generate with Codex" in the AI Assistant section
+    - [ ] Wait for AI generation to complete
+    - [ ] AI draft badge appears
+    - [ ] All sections (Added, Changed, Fixed, etc.) are populated
+
+19. **Generate AI docs suggestions**
+    - [ ] Navigate to Docs Suggestions in sidebar
+    - [ ] Enter project name and change summary
+    - [ ] Click "Generate Documentation Suggestions"
+    - [ ] Wait for AI generation to complete
+    - [ ] All suggestion sections are populated
+    - [ ] Copy button works for each section
+
+20. **Remove AI settings**
+    - [ ] Navigate to Settings
+    - [ ] Click "Remove AI Settings"
+    - [ ] Status shows "Not configured"
+    - [ ] AI features show missing configuration message
+
+21. **Verify app works without AI configuration**
+    - [ ] Non-AI features (projects, commands, terminal, etc.) still work
+    - [ ] AI buttons show friendly "not configured" message
+    - [ ] No crashes or errors
+
 ## Build Verification
 
-14. **Run lint**
+22. **Run lint**
     ```bash
     npm run lint
     ```
     - [ ] No errors
 
-15. **Run build**
+23. **Run build**
     ```bash
     npm run build
     ```
@@ -221,7 +284,7 @@ Use this checklist to verify AgentBoard CE works correctly after a fresh clone.
 
 ## Dark Mode
 
-16. **Verify dark mode**
+24. **Verify dark mode**
     - [ ] Click theme toggle in header
     - [ ] UI switches to dark mode
     - [ ] All pages look correct in dark mode

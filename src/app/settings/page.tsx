@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { useTheme } from "@/components/theme-provider";
-import { Download, Upload, AlertTriangle, Github, CheckCircle, XCircle, Loader2, Eye, EyeOff } from "lucide-react";
+import { Download, Upload, AlertTriangle, Github, CheckCircle, XCircle, Loader2, Eye, EyeOff, Brain } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -48,9 +48,22 @@ export default function SettingsPage() {
   const [githubLoading, setGithubLoading] = useState(false);
   const [showToken, setShowToken] = useState(false);
 
+  // AI settings state
+  const [aiProvider, setAiProvider] = useState("disabled");
+  const [aiApiKey, setAiApiKey] = useState("");
+  const [aiBaseUrl, setAiBaseUrl] = useState("");
+  const [aiModel, setAiModel] = useState("");
+  const [aiEnabled, setAiEnabled] = useState(false);
+  const [aiConfigured, setAiConfigured] = useState(false);
+  const [aiValidated, setAiValidated] = useState(false);
+  const [aiValidatedAt, setAiValidatedAt] = useState<string | null>(null);
+  const [aiLoading, setAiLoading] = useState(false);
+  const [showAiKey, setShowAiKey] = useState(false);
+
   useEffect(() => {
     fetchSettings();
     fetchGithubStatus();
+    fetchAiStatus();
   }, []);
 
   const fetchSettings = async () => {
@@ -164,6 +177,97 @@ export default function SettingsPage() {
       toast.error(tg("tokenRemoveFailed"));
     } finally {
       setGithubLoading(false);
+    }
+  };
+
+  const fetchAiStatus = async () => {
+    try {
+      const [statusRes, settingsRes] = await Promise.all([
+        fetch("/api/ai/status"),
+        fetch("/api/ai/settings"),
+      ]);
+      if (statusRes.ok) {
+        const status = await statusRes.json();
+        setAiConfigured(status.configured);
+        setAiValidated(!!status.validatedAt);
+        setAiValidatedAt(status.validatedAt);
+        setAiEnabled(status.enabled);
+        setAiProvider(status.provider);
+        if (status.model) setAiModel(status.model);
+      }
+      if (settingsRes.ok) {
+        const settings = await settingsRes.json();
+        setAiBaseUrl(settings.baseUrl || "");
+        if (settings.model) setAiModel(settings.model);
+        setAiEnabled(settings.enabled);
+        setAiProvider(settings.provider);
+      }
+    } catch {
+      // Silent fail
+    }
+  };
+
+  const handleSaveAiSettings = async () => {
+    setAiLoading(true);
+    try {
+      const res = await fetch("/api/ai/settings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          provider: aiProvider,
+          apiKey: aiApiKey || undefined,
+          baseUrl: aiBaseUrl || undefined,
+          model: aiModel || undefined,
+          enabled: aiEnabled,
+        }),
+      });
+      if (!res.ok) throw new Error("Failed to save");
+      setAiApiKey("");
+      await fetchAiStatus();
+      toast.success(t("settingsSaved"));
+    } catch {
+      toast.error(t("failedToSave"));
+    } finally {
+      setAiLoading(false);
+    }
+  };
+
+  const handleValidateAi = async () => {
+    setAiLoading(true);
+    try {
+      const res = await fetch("/api/ai/validate", { method: "POST" });
+      if (res.ok) {
+        setAiValidated(true);
+        toast.success("AI settings are valid");
+      } else {
+        const data = await res.json();
+        toast.error(data.error || "Validation failed");
+      }
+    } catch {
+      toast.error("Validation failed");
+    } finally {
+      setAiLoading(false);
+    }
+  };
+
+  const handleRemoveAiSettings = async () => {
+    setAiLoading(true);
+    try {
+      const res = await fetch("/api/ai/settings", { method: "DELETE" });
+      if (res.ok) {
+        setAiConfigured(false);
+        setAiValidated(false);
+        setAiValidatedAt(null);
+        setAiProvider("disabled");
+        setAiBaseUrl("");
+        setAiModel("");
+        setAiEnabled(false);
+        toast.success("AI settings removed");
+      }
+    } catch {
+      toast.error("Failed to remove AI settings");
+    } finally {
+      setAiLoading(false);
     }
   };
 
@@ -355,6 +459,145 @@ export default function SettingsPage() {
                 ]}
               />
             </div>
+          </CardContent>
+        </Card>
+
+        <Card className="lg:col-span-2">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Brain className="h-5 w-5" />
+              AI Settings
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <p className="text-sm text-muted-foreground">
+              Configure an optional AI provider for Codex-assisted maintainer workflows.
+              All AI features are optional. The app works without AI configuration.
+            </p>
+
+            {/* AI Status */}
+            <div className="flex items-center gap-2 p-3 border rounded-lg">
+              <span className="text-sm font-medium">AI Status:</span>
+              {aiConfigured && aiValidated ? (
+                <Badge variant="success" className="gap-1">
+                  <CheckCircle className="h-3 w-3" />
+                  Configured & Valid
+                </Badge>
+              ) : aiConfigured ? (
+                <Badge variant="warning" className="gap-1">
+                  <XCircle className="h-3 w-3" />
+                  Not validated
+                </Badge>
+              ) : (
+                <Badge variant="secondary">Not configured</Badge>
+              )}
+              {aiValidatedAt && (
+                <span className="text-sm text-muted-foreground">
+                  (validated)
+                </span>
+              )}
+            </div>
+
+            {/* Provider */}
+            <div className="space-y-2">
+              <Label htmlFor="ai-provider">AI Provider</Label>
+              <Select
+                id="ai-provider"
+                value={aiProvider}
+                onChange={(e) => setAiProvider(e.target.value)}
+                options={[
+                  { value: "disabled", label: "Disabled" },
+                  { value: "openai", label: "OpenAI" },
+                  { value: "openai-compatible", label: "OpenAI-compatible" },
+                ]}
+              />
+            </div>
+
+            {/* API Key */}
+            {aiProvider !== "disabled" && (
+              <>
+                <div className="space-y-2">
+                  <Label htmlFor="ai-api-key">API Key</Label>
+                  <div className="relative">
+                    <Input
+                      id="ai-api-key"
+                      type={showAiKey ? "text" : "password"}
+                      value={aiApiKey}
+                      onChange={(e) => setAiApiKey(e.target.value)}
+                      placeholder="sk-..."
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowAiKey(!showAiKey)}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                    >
+                      {showAiKey ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    </button>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="ai-base-url">Base URL</Label>
+                  <Input
+                    id="ai-base-url"
+                    value={aiBaseUrl}
+                    onChange={(e) => setAiBaseUrl(e.target.value)}
+                    placeholder="https://api.openai.com/v1"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="ai-model">Model</Label>
+                  <Input
+                    id="ai-model"
+                    value={aiModel}
+                    onChange={(e) => setAiModel(e.target.value)}
+                    placeholder="gpt-4o"
+                  />
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    id="ai-enabled"
+                    checked={aiEnabled}
+                    onChange={(e) => setAiEnabled(e.target.checked)}
+                    className="h-4 w-4 rounded border-gray-300"
+                  />
+                  <Label htmlFor="ai-enabled" className="mb-0">AI enabled</Label>
+                </div>
+              </>
+            )}
+
+            {/* Actions */}
+            <div className="flex gap-2">
+              <Button
+                onClick={handleSaveAiSettings}
+                disabled={aiLoading || aiProvider === "disabled"}
+              >
+                {aiLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
+                Save AI Settings
+              </Button>
+              <Button
+                variant="outline"
+                onClick={handleValidateAi}
+                disabled={!aiConfigured || aiLoading}
+              >
+                Validate
+              </Button>
+              <Button
+                variant="outline"
+                onClick={handleRemoveAiSettings}
+                disabled={!aiConfigured || aiLoading}
+              >
+                Remove AI Settings
+              </Button>
+            </div>
+
+            <p className="text-xs text-muted-foreground">
+              API key is stored locally and never returned to the client. AI output is always a draft requiring human review.
+              AgentBoard CE does not automatically write AI output back to GitHub.
+            </p>
           </CardContent>
         </Card>
 

@@ -27,6 +27,17 @@ export async function POST(request: Request) {
       actualBehavior,
       screenshots,
       additionalNotes,
+      // AI-generated fields (pre-populated)
+      draftType,
+      draftPriority,
+      draftSeverity,
+      affectedArea,
+      reproductionSteps,
+      missingInformation,
+      suggestedLabels,
+      suggestedReply,
+      suggestedAction,
+      markdownOutput,
     } = body;
 
     if (!issueTitle) {
@@ -36,8 +47,21 @@ export async function POST(request: Request) {
       );
     }
 
-    // Generate triage draft
-    const triageResult = generateTriageDraft({
+    // If AI-generated fields are provided, use them directly
+    const triageResult = draftType
+      ? {
+          draftType,
+          draftPriority,
+          draftSeverity,
+          affectedArea,
+          reproductionSteps,
+          missingInformation,
+          suggestedLabels,
+          suggestedReply,
+          suggestedAction,
+          markdownOutput,
+        }
+      : generateTriageDraft({
       issueTitle,
       issueBody,
       environment,

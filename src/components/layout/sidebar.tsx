@@ -17,6 +17,8 @@ import {
   Github,
   ChevronLeft,
   ChevronRight,
+  Brain,
+  FileEdit,
 } from "lucide-react";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
@@ -81,6 +83,16 @@ export function Sidebar() {
       title: t("docs"),
       href: "/docs",
       icon: BookOpen,
+    },
+    {
+      title: t("aiHistory"),
+      href: "/ai-history",
+      icon: Brain,
+    },
+    {
+      title: t("docsSuggestions"),
+      href: "/docs-suggestions",
+      icon: FileEdit,
     },
     {
       title: t("settings"),
@@ -149,7 +161,7 @@ export function Sidebar() {
       <div className="p-4 border-t">
         {!collapsed && (
           <div className="text-xs text-muted-foreground">
-            AgentBoard CE v0.3.0
+            AgentBoard CE v0.4.0
           </div>
         )}
       </div>

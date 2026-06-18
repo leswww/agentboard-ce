@@ -123,6 +123,18 @@ model PrReviewDraft {
   updatedAt             DateTime @updatedAt
 }
 
+model AiRequestLog {
+  id            String   @id @default(cuid())
+  workflowType  String
+  project       String?
+  model         String?
+  status        String   @default("pending")
+  inputSummary  String?
+  outputPreview String?
+  errorMessage  String?
+  createdAt     DateTime @default(now())
+}
+
 model ReleaseNote {
   id               String   @id @default(cuid())
   projectId        String?
